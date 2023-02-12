@@ -1,7 +1,11 @@
 from django.urls import path
-from . import views
+from .views import TaskList, TaskDetail, TaskCreate, TaskUpdate, TaskDelete
 
+# url resolver can't use a class inside it thus we use as_view() method which in turns trigger a function inside that view depending on the method type
 urlpatterns = [
-   path('', views.taskList, name='tasks') 
-    
+   path('', TaskList.as_view(), name='tasks'), 
+   path('task/<int:pk>/', TaskDetail.as_view(), name='task'),
+   path('task-create/', TaskCreate.as_view(), name='task-create'),
+   path('task-update/<int:pk>/', TaskUpdate.as_view(), name='task-update'),
+   path('task-delete/<int:pk>/', TaskDelete.as_view(), name='task-delete')
 ]
