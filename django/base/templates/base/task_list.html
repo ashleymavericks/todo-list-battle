@@ -20,7 +20,7 @@
     {% for task in tasks %}
     <tr>
         <td>{{task.title}}</td>
-        <td>{{task.complete}}</td>
+        <input type="checkbox" name="task_complete" value="{{ task.id }}" {% if task.complete %}checked{% endif %}>
         <td><a href="{% url 'task' task.id %}">View</a></td>
         <td><a href="{% url 'task-update' task.id %}">Edit</a></td>
         <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>

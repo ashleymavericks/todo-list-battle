@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 
 from django.contrib.auth.views import LoginView
-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 from .models import Task
 
@@ -18,9 +19,31 @@ class CustomLoginView(LoginView):
     
     def get_success_url(self):
         return reverse_lazy('tasks')
+    
+    
+class RegisterPageView(FormView):
+    template_name = 'base/register.html'
+    form_class = UserCreationForm
+    redirected_authenticated_user = True
+    success_url = reverse_lazy('tasks')
+    
+    def form_valid(self, form):
+        # get the user -> once the form is saved, return value will be the user
+        user = form.save()
+        # if the user is successfully created -> use the login function to automatically login the user
+        if user:
+            login(self.request, user)
+        return super(RegisterPageView, self).form_valid(form)
+    
+    # overriding since redirected_authenticated_user attribute not working
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('tasks')
+        # any other situation just continue on with default action
+        return super(RegisterPageView, self).get(*args, **kwargs)
 
     
-# Inheriting from ListView, now we have all the functionality of ListView -> returns back a template with queryset of data
+# Inheriting from ListView, now we have all the functionality of ListView -> retrieving a queryset of data from the specified model and passing it to a template for display.
 class TaskListView(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
