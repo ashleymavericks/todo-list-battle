@@ -8,3 +8,6 @@ Created a simple todo list in three different Python frameworks i.e. Flask, Fast
 ## Features
 - Basic todo-list CRUD operations
 - User authentication
+- User registration
+- Search
+- Custom styling

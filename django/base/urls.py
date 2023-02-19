@@ -3,6 +3,7 @@ from .views import TaskListView, TaskDetailView, TaskCreateView, TaskUpdateView,
 from .views import CustomLoginView, RegisterPageView
 from django.contrib.auth.views import LogoutView
 
+
 # url resolver can't use a class inside it thus we use as_view() method which in turns trigger a function inside that view depending on the method type
 urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'),

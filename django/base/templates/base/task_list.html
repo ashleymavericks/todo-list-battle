@@ -10,6 +10,12 @@
 
 <a href="{% url 'task-create' %}">Add task</a>
 
+<form method="GET">
+    <!-- no CSRF token needed, since not a POST request -->
+    <input type="text" name="search_area" value="{{search_input}}">
+    <input type="submit" value="Search">
+</form>
+
 <table>
     <tr>
         <th>Items</th>
